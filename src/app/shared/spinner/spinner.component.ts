@@ -5,7 +5,13 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { DEFAULTS, SpinnerSettings } from './spinner.model';
+import {
+  DEFAULTS,
+  DEFAULT_SPINNER_NAME,
+  SpinnerSettings,
+} from './spinner.model';
+
+import { SpinnerService } from './spinner.service';
 
 @Component({
   selector: 'app-spinner',
@@ -14,27 +20,33 @@ import { DEFAULTS, SpinnerSettings } from './spinner.model';
 })
 export class SpinnerComponent implements OnInit, OnChanges {
   @Input() settings: SpinnerSettings;
-  @Input() show: boolean = true;
 
-  options: SpinnerSettings = {
-    bgColor: DEFAULTS.bgColor,
-    spinnerColor: DEFAULTS.spinnerColor,
-    textColor: DEFAULTS.textColor,
-    zIndex: DEFAULTS.zIndex,
-    fullscreen: DEFAULTS.fullscreen,
-    type: DEFAULTS.type,
-  };
+  options: SpinnerSettings;
 
-  constructor() {}
+  constructor(private spinnerService: SpinnerService) {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.settings && changes.settings.currentValue) {
-      this.options = {
-        ...this.options,
-        ...changes.settings.currentValue,
-      };
+    if (changes.settings) {
+      if (changes.settings.isFirstChange()) {
+        this.options = {
+          ...DEFAULTS,
+          ...changes.settings.currentValue,
+        };
+      } else {
+        this.options = {
+          ...this.options,
+          ...changes.settings.currentValue,
+        };
+      }
     }
     console.log(changes);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.spinnerService.getSpinner(this.options.name).subscribe((state) => {
+      this.options = {
+        ...this.options,
+        show: state.show,
+      };
+    });
+  }
 }

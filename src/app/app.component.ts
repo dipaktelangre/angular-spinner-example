@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SpinnerSettings } from './shared/spinner/spinner.model';
+import { SpinnerService } from './shared/spinner/spinner.service';
 
 interface Country {
   name: string;
@@ -44,22 +45,36 @@ export class AppComponent {
   title = 'spinner';
   countries = COUNTRIES;
 
-  spinnerEnabled;
   spinnerSetting: SpinnerSettings = {
+    name: 'spinner1',
     fullscreen: false,
+    show: true,
   };
 
-  spinnerEnabled1;
   spinnerSetting1: SpinnerSettings = {
+    name: 'spinner2',
     type: 'slash',
+    show: true,
   };
 
-  spinnerEnabled2;
   spinnerSetting2: SpinnerSettings = {
+    name: 'spinner3',
     type: 'fan',
     bgColor: '#445500',
     spinnerColor: '#ff4433',
   };
+
+  constructor(private spinnerService: SpinnerService) {}
+
+  toggleSpinner(setting: SpinnerSettings) {
+    if (setting.show) {
+      this.spinnerService.hide(setting.name);
+    } else {
+      this.spinnerService.show(setting.name);
+    }
+
+    setting.show = !setting.show;
+  }
 
   toggleFullscreen() {
     let fullscreen = this.spinnerSetting.fullscreen;

@@ -6,9 +6,9 @@
           <div class="col">
             <button
               class="btn btn-primary mx-1"
-              (click)="spinnerEnabled = !spinnerEnabled"
+              (click)="toggleSpinner(spinnerSetting)"
             >
-              {{ spinnerEnabled ? "Hide" : "Show" }}
+              {{ spinnerSetting.show ? "Hide" : "Show" }}
             </button>
             <button class="btn btn-primary mx-1" (click)="toggleFullscreen()">
               Fullscreen
@@ -18,10 +18,7 @@
         <div class="row mt-2">
           <div class="col">
             <div class="spinner-box">
-              <app-spinner
-                [show]="spinnerEnabled"
-                [settings]="spinnerSetting"
-              ></app-spinner>
+              <app-spinner [settings]="spinnerSetting"></app-spinner>
 
               <table class="table table-striped">
                 <thead>
@@ -63,9 +60,9 @@
           <div class="col">
             <button
               class="btn btn-primary mx-1"
-              (click)="spinnerEnabled1 = !spinnerEnabled1"
+              (click)="toggleSpinner(spinnerSetting1)"
             >
-              {{ spinnerEnabled1 ? "Hide" : "Show" }}
+              {{ spinnerSetting1.show ? "Hide" : "Show" }}
             </button>
             <button class="btn btn-primary mx-1" (click)="toggleFullscreen()">
               Fullscreen
@@ -75,10 +72,7 @@
         <div class="row mt-2">
           <div class="col">
             <div class="spinner-box">
-              <app-spinner
-                [show]="spinnerEnabled1"
-                [settings]="spinnerSetting1"
-              ></app-spinner>
+              <app-spinner [settings]="spinnerSetting1"></app-spinner>
             </div>
           </div>
         </div>
@@ -91,9 +85,9 @@
           <div class="col">
             <button
               class="btn btn-primary mx-1"
-              (click)="spinnerEnabled2 = !spinnerEnabled2"
+              (click)="toggleSpinner(spinnerSetting2)"
             >
-              {{ spinnerEnabled2 ? "Hide" : "Show" }}
+              {{ spinnerSetting2.show ? "Hide" : "Show" }}
             </button>
             <button class="btn btn-primary mx-1" (click)="toggleFullscreen()">
               Fullscreen
@@ -103,10 +97,7 @@
         <div class="row mt-2">
           <div class="col">
             <div class="spinner-box">
-              <app-spinner
-                [show]="spinnerEnabled2"
-                [settings]="spinnerSetting2"
-              ></app-spinner>
+              <app-spinner [settings]="spinnerSetting2"></app-spinner>
             </div>
           </div>
         </div>
