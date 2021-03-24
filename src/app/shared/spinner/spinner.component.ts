@@ -2,9 +2,12 @@ import {
   Component,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {
   DEFAULTS,
   DEFAULT_SPINNER_NAME,
@@ -18,10 +21,11 @@ import { SpinnerService } from './spinner.service';
   templateUrl: 'spinner.component.html',
   styleUrls: ['spinner.component.scss'],
 })
-export class SpinnerComponent implements OnInit, OnChanges {
+export class SpinnerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() settings: SpinnerSettings;
 
   options: SpinnerSettings;
+  ngUnsubscribe: Subject<void> = new Subject();
 
   constructor(private spinnerService: SpinnerService) {}
   ngOnChanges(changes: SimpleChanges): void {
@@ -42,11 +46,19 @@ export class SpinnerComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.spinnerService.getSpinner(this.options.name).subscribe((state) => {
-      this.options = {
-        ...this.options,
-        show: state.show,
-      };
-    });
+    this.spinnerService
+      .getSpinner(this.options.name)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((state) => {
+        this.options = {
+          ...this.options,
+          show: state.show,
+        };
+      });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

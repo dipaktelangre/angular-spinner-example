@@ -7,7 +7,10 @@
   <div class="spinner align-self-center" [style.color]="options.spinnerColor">
     <i class="fas fa-3x fa-{{ options.type }} fa-spin"></i>
   </div>
-  <div class="spinner-text align-self-center" [style.color]="options.textColor">
-    Loading ...
+  <div
+    class="spinner-text align-self-center p-3 text-break"
+    [style.color]="options.textColor"
+  >
+    <ng-content></ng-content>
   </div>
 </div>
