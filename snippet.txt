@@ -1,30 +1,36 @@
-------------------- HTML -------------
+------------------- HTML app.component.html-------------
 
 <div class="container">
-  <div class="row mt-3">
-    <div class="col">
-      <div class="spinner-wrapper p-1">
+
+  <div class="col-12 col-md-6 my-3">
+      <div class="spinner-demo p-1">
         <div class="row">
           <div class="col">
-            <button class="btn btn-primary mx-1">Show</button>
-            <button class="btn btn-primary mx-1">Fullscreen</button>
+            <button
+              class="btn btn-primary mx-1"
+            >
+              Show
+            </button>
+            <button class="btn btn-primary mx-1" >
+              Fullscreen
+            </button>
           </div>
         </div>
         <div class="row mt-2">
           <div class="col">
-            <div class="spinner-box"></div>
+            <div class="spinner-box">
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </div>
 
 
 
----------------------- SCSS --------------------
+---------------------- SCSS  app.component.scss--------------------
 
-.spinner-wrapper {
+.spinner-demo {
   height: 400px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -33,4 +39,357 @@
 .spinner-box {
   border: 1px dotted #ccc;
   height: 340px;
+  position: relative;
 }
+
+
+
+
+----------------------Shared /Spinner ----------------
+----------spinner.component.html--------------
+
+<div
+  class="d-flex justify-content-center spinner-overlay"
+  *ngIf="options.show"
+  [style.position]="options.fullscreen ? 'fixed' : absolute"
+  [style.background-color]="options.bgColor"
+>
+  <div class="spinner align-self-center" [style.color]="options.spinnerColor">
+    <i class="fas fa-3x fa-{{ options.type }} fa-spin"></i>
+  </div>
+  <div
+    class="spinner-text align-self-center p-3 text-break"
+    [style.color]="options.textColor"
+  >
+    <ng-content></ng-content>
+  </div>
+</div>
+
+------------spinner.component.scss ------------------
+
+.spinner-overlay {
+  width: 100%;
+  height: 100%;
+  background-color: #ccc;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  opacity: 0.7;
+}
+
+.spinner-text {
+  position: absolute;
+  margin-top: 70px;
+}
+
+
+
+--------------------- spinner.component.ts-----------
+
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import {
+  DEFAULTS,
+  DEFAULT_SPINNER_NAME,
+  SpinnerSettings,
+} from './spinner.model';
+
+import { SpinnerService } from './spinner.service';
+
+@Component({
+  selector: 'app-spinner',
+  templateUrl: 'spinner.component.html',
+  styleUrls: ['spinner.component.scss'],
+})
+export class SpinnerComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() settings: SpinnerSettings;
+
+  options: SpinnerSettings;
+  ngUnsubscribe: Subject<void> = new Subject();
+
+  constructor(private spinnerService: SpinnerService) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.settings) {
+      if (changes.settings.isFirstChange()) {
+        this.options = {
+          ...DEFAULTS,
+          ...changes.settings.currentValue,
+        };
+      } else {
+        this.options = {
+          ...this.options,
+          ...changes.settings.currentValue,
+        };
+      }
+    }
+    console.log(changes);
+  }
+
+  ngOnInit() {
+    this.spinnerService
+      .getSpinner(this.options.name)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((state) => {
+        this.options = {
+          ...this.options,
+          show: state.show,
+        };
+      });
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+}
+
+
+---------------------- spinner.model.ts ---------------
+
+export const DEFAULT_SPINNER_NAME = 'primary_spinner';
+
+export class SpinnerSettings {
+  name: string;
+  bgColor?: string;
+  zIndex?: number;
+  textColor?: string;
+  spinnerColor?: string;
+  fullscreen?: boolean;
+  type?: string;
+  show?: boolean;
+}
+
+export const DEFAULTS: SpinnerSettings = {
+  name: DEFAULT_SPINNER_NAME,
+  bgColor: '#000',
+  spinnerColor: '#fff',
+  zIndex: 2,
+  fullscreen: false,
+  textColor: '#fff',
+  type: 'spinner',
+  show: false,
+};
+
+
+---------------------- spinner.service.ts ------------
+
+
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+import { filter } from 'rxjs/operators';
+
+import {
+  SpinnerSettings,
+  DEFAULTS,
+  DEFAULT_SPINNER_NAME,
+} from './spinner.model';
+
+class SpinnerState {
+  name: string;
+  show: boolean;
+}
+
+@Injectable({ providedIn: 'root' })
+export class SpinnerService {
+  private spinner$ = new BehaviorSubject<SpinnerState>(null);
+  constructor() {}
+
+  getSpinner(name: string = DEFAULT_SPINNER_NAME): Observable<SpinnerState> {
+    return this.spinner$
+      .asObservable()
+      .pipe(filter((x: SpinnerState) => x && x.name === name));
+  }
+
+  show(name: string = DEFAULT_SPINNER_NAME): void {
+    this.spinner$.next({ name, show: true });
+  }
+
+  hide(name: string = DEFAULT_SPINNER_NAME): void {
+    this.spinner$.next({ name, show: false });
+  }
+}
+
+
+
+------------------------------------ app.component.ts -------
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+})
+export class AppComponent {
+  title = 'spinner';
+  countries = COUNTRIES;
+
+  spinnerSetting: SpinnerSettings = {
+    name: 'spinner1',
+    fullscreen: false,
+    show: true,
+  };
+
+  spinnerSetting1: SpinnerSettings = {
+    name: 'spinner2',
+    type: 'slash',
+    show: true,
+  };
+
+  spinnerSetting2: SpinnerSettings = {
+    name: 'spinner3',
+    type: 'fan',
+    bgColor: '#445500',
+    spinnerColor: '#ff4433',
+  };
+
+  constructor(private spinnerService: SpinnerService) {}
+
+  toggleSpinner(setting: SpinnerSettings) {
+    if (setting.show) {
+      this.spinnerService.hide(setting.name);
+    } else {
+      this.spinnerService.show(setting.name);
+    }
+
+    setting.show = !setting.show;
+  }
+
+  toggleFullscreen() {
+    let fullscreen = this.spinnerSetting.fullscreen;
+    this.spinnerSetting = {
+      ...this.spinnerSetting,
+      fullscreen: !fullscreen,
+    };
+  }
+}
+
+
+
+
+------------------ app.component.html ---------
+
+<div class="container">
+  <div class="row mt-3">
+    <div class="col-12 col-md-6 my-3">
+      <div class="spinner-demo p-1">
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-primary mx-1"
+              (click)="toggleSpinner(spinnerSetting)"
+            >
+              {{ spinnerSetting.show ? "Hide" : "Show" }}
+            </button>
+            <button class="btn btn-primary mx-1" (click)="toggleFullscreen()">
+              Fullscreen
+            </button>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col">
+            <div class="spinner-box">
+              <app-spinner [settings]="spinnerSetting">
+                Default loader ...
+              </app-spinner>
+
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Country</th>
+                    <th scope="col">Area</th>
+                    <th scope="col">Population</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let country of countries; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>
+                      <img
+                        [src]="
+                          'https://upload.wikimedia.org/wikipedia/commons/' +
+                          country.flag
+                        "
+                        class="mr-2"
+                        style="width: 20px"
+                      />
+                      {{ country.name }}
+                    </td>
+                    <td>{{ country.area | number }}</td>
+                    <td>{{ country.population | number }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 my-3">
+      <div class="spinner-demo p-1">
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-primary mx-1"
+              (click)="toggleSpinner(spinnerSetting1)"
+            >
+              {{ spinnerSetting1.show ? "Hide" : "Show" }}
+            </button>
+            <button class="btn btn-primary mx-1" (click)="toggleFullscreen()">
+              Fullscreen
+            </button>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col">
+            <div class="spinner-box">
+              <app-spinner [settings]="spinnerSetting1">
+                Slash loader looks good !!
+              </app-spinner>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 my-3">
+      <div class="spinner-demo p-1">
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-primary mx-1"
+              (click)="toggleSpinner(spinnerSetting2)"
+            >
+              {{ spinnerSetting2.show ? "Hide" : "Show" }}
+            </button>
+            <button class="btn btn-primary mx-1" (click)="toggleFullscreen()">
+              Fullscreen
+            </button>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col">
+            <div class="spinner-box">
+              <app-spinner [settings]="spinnerSetting2">
+                I am loading as per your customization. YOu can use any message
+                here.
+              </app-spinner>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
