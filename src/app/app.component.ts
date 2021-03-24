@@ -45,10 +45,22 @@ export class AppComponent {
   countries = COUNTRIES;
 
   spinnerEnabled;
-
   spinnerSetting: SpinnerSettings = {
     fullscreen: false,
   };
+
+  spinnerEnabled1;
+  spinnerSetting1: SpinnerSettings = {
+    type: 'slash',
+  };
+
+  spinnerEnabled2;
+  spinnerSetting2: SpinnerSettings = {
+    type: 'fan',
+    bgColor: '#445500',
+    spinnerColor: '#ff4433',
+  };
+
   toggleFullscreen() {
     let fullscreen = this.spinnerSetting.fullscreen;
     this.spinnerSetting = {

@@ -4,6 +4,7 @@ export class SpinnerSettings {
   textColor?: string;
   spinnerColor?: string;
   fullscreen?: boolean;
+  type?: string;
 }
 
 export const DEFAULTS: SpinnerSettings = {
@@ -12,4 +13,5 @@ export const DEFAULTS: SpinnerSettings = {
   zIndex: 2,
   fullscreen: false,
   textColor: '#fff',
+  type: 'spinner',
 };

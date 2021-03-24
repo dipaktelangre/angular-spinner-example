@@ -22,6 +22,7 @@ export class SpinnerComponent implements OnInit, OnChanges {
     textColor: DEFAULTS.textColor,
     zIndex: DEFAULTS.zIndex,
     fullscreen: DEFAULTS.fullscreen,
+    type: DEFAULTS.type,
   };
 
   constructor() {}

@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row mt-3">
-    <div class="col">
+    <div class="col-12 col-md-6 my-3">
       <div class="spinner-demo p-1">
         <div class="row">
           <div class="col">
@@ -51,6 +51,62 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 my-3">
+      <div class="spinner-demo p-1">
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-primary mx-1"
+              (click)="spinnerEnabled1 = !spinnerEnabled1"
+            >
+              {{ spinnerEnabled1 ? "Hide" : "Show" }}
+            </button>
+            <button class="btn btn-primary mx-1" (click)="toggleFullscreen()">
+              Fullscreen
+            </button>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col">
+            <div class="spinner-box">
+              <app-spinner
+                [show]="spinnerEnabled1"
+                [settings]="spinnerSetting1"
+              ></app-spinner>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 my-3">
+      <div class="spinner-demo p-1">
+        <div class="row">
+          <div class="col">
+            <button
+              class="btn btn-primary mx-1"
+              (click)="spinnerEnabled2 = !spinnerEnabled2"
+            >
+              {{ spinnerEnabled2 ? "Hide" : "Show" }}
+            </button>
+            <button class="btn btn-primary mx-1" (click)="toggleFullscreen()">
+              Fullscreen
+            </button>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col">
+            <div class="spinner-box">
+              <app-spinner
+                [show]="spinnerEnabled2"
+                [settings]="spinnerSetting2"
+              ></app-spinner>
             </div>
           </div>
         </div>
