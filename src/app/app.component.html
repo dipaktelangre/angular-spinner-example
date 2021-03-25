@@ -1,16 +1,67 @@
 <div class="container">
   <div class="row">
-    <div class="col p-2 mt-3">
-      <ngb-alert [dismissible]="true">
-        <i class="fas fa-allergies"></i>
+    <div class="col">
+      <div class="spinner-demo my-2">
+        <div class="row">
+          <div class="col p-2">
+            <button
+              class="btn btn-primary mx-2"
+              (click)="toggleSpinner(spinnerSettings)"
+            >
+              {{ spinnerSettings.show ? "Hide" : "Show" }}</button
+            ><button
+              class="btn btn-primary"
+              (click)="toggleFullscreen(spinnerSettings)"
+            >
+              Fullscreen
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="spinner-box">
+              <app-spinner [settings]="spinnerSettings">
+                Loading slash looks good
+                <i class="fas fa-ring"></i>
+              </app-spinner>
 
-        <span> Hand having warning </span>
-      </ngb-alert>
-      <ngb-alert [type]="'success'" [dismissible]="true">
-        <i class="far fa-angry"></i>
+              <p>I am content behind</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        <span>I am angry bird !!</span>
-      </ngb-alert>
+    <div class="col">
+      <div class="spinner-demo my-2">
+        <div class="row">
+          <div class="col p-2">
+            <button
+              class="btn btn-primary mx-2"
+              (click)="toggleSpinner(spinnerSettings1)"
+            >
+              {{ spinnerSettings1.show ? "Hide" : "Show" }}</button
+            ><button
+              class="btn btn-primary"
+              (click)="toggleFullscreen(spinnerSettings1)"
+            >
+              Fullscreen
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="spinner-box">
+              <app-spinner [settings]="spinnerSettings1">
+                Loading slash looks good
+                <i class="fas fa-ring"></i>
+              </app-spinner>
+
+              <p>sdbgkhskd hgksdhg khkdsjgh</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
