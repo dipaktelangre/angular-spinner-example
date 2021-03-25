@@ -30,7 +30,7 @@ import { SpinnerModule } from "./shared/spinner/spinner.module";
 export class AppModule {}
 ```
 
-Add `NgxSpinnerService` service wherever you want to use the `ngx-spinner`.
+Add `SpinnerService` service wherever you want to use the `app-spinner`.
 
 ```typescript
 import { NgxSpinnerService } from "ngx-spinner";
