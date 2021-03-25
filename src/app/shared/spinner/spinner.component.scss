@@ -11,5 +11,13 @@
 
 .spinner-text {
   position: absolute;
-  margin-top: 70px;
+  &.small {
+    margin-top: 40px;
+  }
+  &.medium {
+    margin-top: 70px;
+  }
+  &.large {
+    margin-top: 85px;
+  }
 }

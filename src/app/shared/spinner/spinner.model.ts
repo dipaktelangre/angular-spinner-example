@@ -1,14 +1,29 @@
 export const DEFAULT_SPINNER_NAME = 'primary_spinner';
 
+export enum SpinnerSize {
+  small = '1x',
+  medium = '2x',
+  large = '3x',
+}
+
+export enum SpinnerStyle {
+  regular = 'r',
+  solid = 's',
+  light = 'l',
+  dualtone = 'd',
+}
+
 export class SpinnerSettings {
   name: string;
   bgColor?: string;
   zIndex?: number;
   textColor?: string;
-  spinnerColor?: string;
   fullscreen?: boolean;
-  type?: string;
   show?: boolean;
+  spinnerColor?: string;
+  spinnerIcon?: string;
+  spinnerSize?: 'small' | 'medium' | 'large';
+  spinnerStyle?: 'regular' | 'solid' | 'light' | 'dualtone';
 }
 
 export const DEFAULTS: SpinnerSettings = {
@@ -17,7 +32,9 @@ export const DEFAULTS: SpinnerSettings = {
   spinnerColor: '#fff',
   zIndex: 2,
   fullscreen: false,
-  textColor: '#fff',
-  type: 'spinner',
   show: false,
+  textColor: '#fff',
+  spinnerIcon: 'spinner',
+  spinnerSize: 'medium',
+  spinnerStyle: 'solid',
 };

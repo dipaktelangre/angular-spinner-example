@@ -5,10 +5,20 @@
   [style.background-color]="options.bgColor"
 >
   <div class="spinner align-self-center" [style.color]="options.spinnerColor">
-    <i class="fas fa-3x fa-{{ options.type }} fa-spin"></i>
+    <i
+      class="{{
+        getIconClass(
+          options.spinnerStyle,
+          options.spinnerIcon,
+          options.spinnerSize
+        )
+      }}"
+    ></i>
   </div>
   <div
-    class="spinner-text align-self-center p-3 text-break"
+    class="spinner-text align-self-center p-3 text-break {{
+      options.spinnerSize
+    }}"
     [style.color]="options.textColor"
   >
     <ng-content></ng-content>

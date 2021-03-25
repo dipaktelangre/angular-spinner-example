@@ -12,6 +12,8 @@ import {
   DEFAULTS,
   DEFAULT_SPINNER_NAME,
   SpinnerSettings,
+  SpinnerSize,
+  SpinnerStyle,
 } from './spinner.model';
 
 import { SpinnerService } from './spinner.service';
@@ -60,5 +62,11 @@ export class SpinnerComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  getIconClass(style: SpinnerStyle, icon: string, size: SpinnerSize): string {
+    if (icon) {
+      return `fa${SpinnerStyle[style]} fa-${icon} fa-${SpinnerSize[size]} fa-spin`;
+    }
   }
 }

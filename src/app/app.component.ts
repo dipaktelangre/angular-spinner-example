@@ -49,19 +49,23 @@ export class AppComponent {
     name: 'spinner1',
     fullscreen: false,
     show: true,
+    spinnerSize: 'large',
   };
 
   spinnerSetting1: SpinnerSettings = {
     name: 'spinner2',
-    type: 'slash',
+    spinnerIcon: 'slash',
     show: true,
+    spinnerSize: 'medium',
   };
 
   spinnerSetting2: SpinnerSettings = {
     name: 'spinner3',
-    type: 'fan',
+    spinnerIcon: 'sun',
     bgColor: '#445500',
     spinnerColor: '#ff4433',
+    spinnerSize: 'large',
+    spinnerStyle: 'regular',
   };
 
   constructor(private spinnerService: SpinnerService) {}
