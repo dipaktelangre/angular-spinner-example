@@ -6,9 +6,9 @@ Simple and clean spinner component in Angular 10, Bootstrap and Font-awsome
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Screenshot
+## Full example tutorial
 
-![Demo image](demo.png)
+[![Angular spinner example](http://img.youtube.com/vi/slsK2wXUah0/0.jpg)](http://www.youtube.com/watch?v=slsK2wXUah0 "Angular create spinner component full tutorial")
 
 ## Usage
 
